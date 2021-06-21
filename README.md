@@ -1,5 +1,5 @@
 # Parallel-KMeans-with-MPI
-
+This is an example of KMeans Algorithm integrated with MPI4py libaray, which help to run in parallel process.
 # Install MPI4py in your OS
 pip install mpi4py
 
