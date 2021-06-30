@@ -39,23 +39,24 @@ if rank == 0:
 	num_clusters = int(num_clusters)
 	start_time = time.time()
 
-	with open('kmeans_dataset.csv', 'r') as f:
+	with open('kmeans_dataset_1.csv', 'r') as f:
 		reader = csv.reader(f)
 		data = list(reader)
 
-	data.pop(0)
-	for i in range (len(data)):
-		data[i].pop(0)
-	data = data[0 : 10000]
+	data = data[0 : 20000]
 	data = np.array(data).astype(np.float64)
 
 	kmeans = KMeans(n_clusters = num_clusters, random_state = 0).fit(data).labels_
 
 	initial = []
-	kRandom = np.random.randint(0, len(data) - 1, num_clusters)
-	print("Initial Centroids position in data set: {}".format(kRandom))
-	for i in kRandom:
+	# kRandom = np.random.randint(0, len(data) - 1, num_clusters)
+	# print("Initial Centroids position in data set: {}".format(kRandom))
+	# for i in kRandom:
+	# 	initial.append(data[i])
+
+	for i in range(num_clusters):
 		initial.append(data[i])
+		
 	initial = np.vstack(initial)
 	num_points = len(data)
 	dimensions = len(data[0])
