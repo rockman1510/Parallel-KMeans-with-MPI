@@ -16,7 +16,7 @@ https://www.microsoft.com/en-us/download/details.aspx?id=57467
 mpiexec -n [processors number] python [python script file name]
 
 ## For Integrated OpenMP Implementation:
-cd OpenMP_Implementation
+cd OpenMP_Implementation\n
 ggc main.c openmp_kmeans.c IO.c -fopenmp -o [output file name]
 - for example:
 ggc main.c openmp_kmeans.c IO.c -fopenmp -o kmeans
