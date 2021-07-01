@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 #include "IO.h"
-#include "omp_kmeans.h"
+#include "openmp_kmeans.h"
 
 int main(int argc, char const *argv[]){
 	if(argc != 6){
@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]){
 	const char *data_points_output_filename = argv[4];
 	const char *centroids_output_filename = argv[5];
 
-	int N;
+	int N = 434873; //434873 - Maximum number of data
 	float *data_points;
 	float *cluster_points;
 	float *centroids;
@@ -27,11 +27,11 @@ int main(int argc, char const *argv[]){
 	double start_time = omp_get_wtime();
 	printf("====================Process Started====================\n");
 	printf("data_points size: %d\n", N);
-	for (int i = 0; i < N; i++){
-		printf("i = %d\tdata: %f %f %f\n", i, data_points[(i * 3)], data_points[(i * 3) + 1], data_points[(i * 3) + 2]);
-		if(i == 50)
-			break;
-	}
+	// for (int i = 0; i < N; i++){
+	// 	printf("i = %d\tdata: %f %f %f\n", i, data_points[(i * 3)], data_points[(i * 3) + 1], data_points[(i * 3) + 2]);
+	// 	if(i == 50)
+	// 		break;
+	// }
 	kmeansClusterOpenMP(N, K, num_threads, data_points, &cluster_points, &centroids, &iterations);
 	double end_time = omp_get_wtime();
 	printf("Executed Time: %lfs\n", end_time - start_time);

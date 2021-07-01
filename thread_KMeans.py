@@ -117,7 +117,7 @@ with open('kmeans_dataset_1.csv', 'r') as f:
 	reader = csv.reader(f)
 	data = list(reader)
 
-data = data[0 : 10000]
+data = data[0 : 20000]  #434873
 data = np.array(data).astype(np.float64)
 
 kmeans = KMeans(n_clusters = num_clusters, random_state = 0).fit(data).labels_
@@ -175,7 +175,7 @@ while flag == True:
 		originalCentroid = previousCentroids[i]
 		currentCentroid = newCentroids[i]
 		if np.sum((currentCentroid - originalCentroid) / originalCentroid * 100.0) > 0.001:
-			print(np.sum((currentCentroid - originalCentroid) / originalCentroid * 100.0))
+			# print(np.sum((currentCentroid - originalCentroid) / originalCentroid * 100.0))
 			flag = True
 	initialCentroids = newCentroids
 	# print("initialCentroids: {}".format(initialCentroids))
