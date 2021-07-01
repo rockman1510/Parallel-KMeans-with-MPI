@@ -18,11 +18,11 @@ mpiexec -n [processors number] python [python script file name]
 ## For Integrated OpenMP Implementation:
 cd OpenMP_Implementation
 ggc main.c openmp_kmeans.c IO.c -fopenmp -o [output file name]
-for example:
+- for example:
 ggc main.c openmp_kmeans.c IO.c -fopenmp -o kmeans
 
 [output file name] [dataset file name] [number of threads] [number of clusters] [cluster file name output] [centroid file name output]
-for example:
+- for example:
 kmeans kmeans_dataset_1.txt 8 3 cluster_3_8.txt centroid_3_8.txt
 
 ## For normal Multi-Thread in Python environment:
