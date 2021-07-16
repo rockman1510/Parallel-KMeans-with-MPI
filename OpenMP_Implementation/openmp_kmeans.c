@@ -5,13 +5,13 @@
 #include <omp.h>
 #include "openmp_kmeans.h"
 
-#define MAX_ITERATORS 50000
-#define THREASHOLD 1e-4
+#define MAX_ITERATORS 1000
+#define THREASHOLD 1e-3
 
 float *centroids_global;
 float *cluster_points_global;
-float detal_global = THREASHOLD + 1;
-double current_delta_global_iteration;
+float distance_global = THREASHOLD + 1;
+double distance_per_iteration;
 int global_counter = 0;
 
 double calEuclideanDistance(float *point1, float *point2){
@@ -30,7 +30,7 @@ void threadingCalCluster(int tId, int N, int K, int num_threads, float *data_poi
 	double min_distance, current_distance;
 	int *current_cluster_id = (int *)malloc(sizeof(int) * length_per_thread);
 	int counter = 0;
-	while((detal_global > THREASHOLD) && (counter < MAX_ITERATORS)){
+	while((distance_global > THREASHOLD) && (counter < MAX_ITERATORS)){
 		float *current_centroid = (float *)calloc(K * 3, sizeof(float));
 		int *cluster_count = (int *)calloc(K, sizeof(int));
 		for (int i = start; i < end; i++){
@@ -44,10 +44,8 @@ void threadingCalCluster(int tId, int N, int K, int num_threads, float *data_poi
 					(*cluster_points)[(i * 4) + 1] = data_points[(i * 3) + 1];
 					(*cluster_points)[(i * 4) + 2] = data_points[(i * 3) + 2];
 					(*cluster_points)[(i * 4) + 3] = j;
-					// printf("store cluster_points - index %d: %f\t%f\t%f\t%f\n", i, (*cluster_points)[(i * 4)], (*cluster_points)[(i * 4 ) + 1], (*cluster_points)[(i * 4) + 2], (*cluster_points)[(i * 4) + 3]);
 				}
 			}
-			// printf("current_cluster_id[i - start]: %d\n", current_cluster_id[i - start]);
 
 			// Sum all the point belong to a luster
 			cluster_count[current_cluster_id[i - start]]++;
@@ -62,26 +60,23 @@ void threadingCalCluster(int tId, int N, int K, int num_threads, float *data_poi
 				if (cluster_count[i] == 0){
 					continue;
 				}
-				// Calculate mean of a cluster
+				// Calculate mean of a cluster and update it
 				centroids_global[((counter + 1) * K + i) * 3] = current_centroid[(i * 3)] / (float)cluster_count[i];
 				centroids_global[((counter + 1) * K + i) * 3 + 1] = current_centroid[(i * 3) + 1] / (float)cluster_count[i];
 				centroids_global[((counter + 1) * K + i) * 3 + 2] = current_centroid[(i * 3) + 2] / (float)cluster_count[i];
 			}
 		}
-
-		double current_delta = 0.0;
+		
+		// Find distance value after each iteration in all the threads
+		double current_distance = 0.0;
 		for (int i = 0; i < K; i++){
-			current_delta += calEuclideanDistance((centroids_global + (counter * K + i) * 3), (centroids_global + ((counter - 1) * K + i) * 3));
+			current_distance += calEuclideanDistance((centroids_global + (counter * K + i) * 3), (centroids_global + ((counter - 1) * K + i) * 3));
 		}
 
-// #pragma omp parallel for reduction(+ : sum)
-// 		for (int i = 0; i < N; i++){
-
-// 		}
 #pragma omp barrier
 		{
-			if (current_delta > current_delta_global_iteration)
-				current_delta_global_iteration = current_delta;
+			if (current_distance > distance_per_iteration)
+				distance_per_iteration = current_distance;
 		}
 
 #pragma omp barrier
@@ -90,12 +85,11 @@ void threadingCalCluster(int tId, int N, int K, int num_threads, float *data_poi
 #pragma omp master
 		{
 			// printf("counter: %d\n", counter);
-			detal_global = current_delta_global_iteration;
-			current_delta_global_iteration = 0.0;
+			distance_global = distance_per_iteration;
+			distance_per_iteration = 0.0;
 			(*num_iterations)++;
 			global_counter = counter;
 		}
-		// printf("======================Thread %d========================\n", tId);
 	}
 }
 
@@ -114,7 +108,7 @@ void kmeansClusterOpenMP(int N, int K, int num_threads, float *data_points, floa
 #pragma omp parallel
 	{
 		int tId = omp_get_thread_num();
-		printf("Thread Number: %d created\n", tId);
+		// printf("Thread Number: %d created\n", tId);
 		threadingCalCluster(tId, N, K, num_threads, data_points, cluster_points, num_iterations);
 	}
 

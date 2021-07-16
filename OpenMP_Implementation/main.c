@@ -5,18 +5,18 @@
 #include "openmp_kmeans.h"
 
 int main(int argc, char const *argv[]){
-	if(argc != 6){
-		printf("Please input with format: [output file name] [dataset file name] [number of threads] [number of clusters] [cluster file name output] [centroid file name output]");
+	if(argc != 7){
+		printf("Please input with format: [output file name] [dataset file name] [number of threads] [number of clusters] [number of data] [cluster file name output] [centroid file name output]");
 		return 0;
 	}
 
 	const char *dataset_filename = argv[1];
 	const int num_threads = atoi(argv[2]);
 	const int K = atoi(argv[3]);
-	const char *data_points_output_filename = argv[4];
-	const char *centroids_output_filename = argv[5];
+	int N = atoi(argv[4]);		//434873 - Maximum number of data
+	const char *data_points_output_filename = argv[5];
+	const char *centroids_output_filename = argv[6];
 
-	int N = 434873; //434873 - Maximum number of data
 	float *data_points;
 	float *cluster_points;
 	float *centroids;
