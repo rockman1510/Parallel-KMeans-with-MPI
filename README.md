@@ -13,7 +13,7 @@ https://www.microsoft.com/en-us/download/details.aspx?id=57467
 
 ## Execute Command:
 ### For Integrated MPI4py Implementation:
-_mpiexec -n [processors number] python [python script file name]_
+_mpiexec -n [processors number] python [python script file name]_ _[number of data] [number of clusters]_
 
 ### For Integrated OpenMP Implementation:
 _cd OpenMP_Implementation_
