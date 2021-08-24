@@ -22,9 +22,9 @@ _ggc main.c openmp_kmeans.c IO.c -fopenmp -o [output file name]_
 - for example:
 _ggc main.c openmp_kmeans.c IO.c -fopenmp -o kmeans_
 
-_[output file name] [dataset file name] [number of threads] [number of clusters] [cluster file name output] [centroid file name output]_
+_[output file name] [dataset file name] [number of threads] [number of clusters] [number of data] [cluster file name output] [centroid file name output]_
 - for example:
-_kmeans kmeans_dataset_1.txt 8 3 cluster_3_8.txt centroid_3_8.txt_
+_kmeans kmeans_dataset_1.txt 8 3 200000 cluster_3_8.txt centroid_3_8.txt_
 
 ### For normal Multi-Thread in Python environment:
 _python thread_KMeans.py_
