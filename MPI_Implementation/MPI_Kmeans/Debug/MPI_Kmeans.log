@@ -1,0 +1,7 @@
+﻿  IO.cpp
+  MPI_KMeans.cpp
+C:\Users\Skylabs Groups\source\repos\MPI_KMeans\MPI_Kmeans\MPI_KMeans.cpp(135,93): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Skylabs Groups\source\repos\MPI_KMeans\MPI_Kmeans\MPI_KMeans.cpp(178,58): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Skylabs Groups\source\repos\MPI_KMeans\MPI_Kmeans\MPI_KMeans.cpp(31,9): warning C4101: 'd': unreferenced local variable
+  Generating Code...
+  MPI_Kmeans.vcxproj -> C:\Users\Skylabs Groups\source\repos\MPI_KMeans\Debug\MPI_Kmeans.exe
